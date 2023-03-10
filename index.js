@@ -7,6 +7,7 @@ let app = express()
 let mongoose = require('mongoose')
 let song = require('./song')
 let cors = require('cors')
+const { updateOne } = require('./song')
 
 // enable express to work with json type request body
 app.use(express.json())
@@ -144,6 +145,52 @@ app.get("/get/song/:myid", (request, response)=>{
     )
     .then((data)=>{
         response.json(data)
+    })
+    .catch((error)=>{
+        response.json(error)
+    })
+})
+
+
+// delete song by id
+app.get("/delete/song/:myid", (request, response)=>{
+    console.log(request.params.myid)
+    song.findByIdAndDelete(
+        request.params.myid
+    )
+    .then((data)=>{
+        response.json({
+            "status":"deleted",
+            "data": data
+        })
+    })
+    .catch((error)=>{
+        response.json(error)
+    })
+})
+
+// update song by id anda request body
+
+app.put("/update/song/:id", (request, response)=>{
+    console.log('id received: ' + request.params.id)
+    console.log('request body received')
+    console.log(request.body)
+    // updateOne(which, what)
+    song.updateOne(
+        {_id:request.params.id}, 
+        {$set:
+            {
+                videoid:request.body.videoid,
+                views:request.body.views, 
+                likes:request.body.likes
+            }
+        }
+        )
+    .then((data)=>{
+        response.json({
+            "status":"updated",
+            "data": data
+        })
     })
     .catch((error)=>{
         response.json(error)
