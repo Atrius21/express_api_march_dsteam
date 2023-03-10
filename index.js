@@ -129,7 +129,7 @@ app.get("/get/songs", (request,response)=>{
     // connect to mongodb to get all documents
     song.find({})
     .then((data)=>{
-        response.json()
+        response.json(data)
     })
     .catch((error)=>{
         response.json(error)
