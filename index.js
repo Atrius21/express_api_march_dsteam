@@ -6,10 +6,11 @@ let express = require('express')
 let app = express()
 let mongoose = require('mongoose')
 let song = require('./song')
+let cors = require('cors')
 
 // enable express to work with json type request body
 app.use(express.json())
-
+app.use(cors())
 let PORT = 8989
 
 
@@ -122,7 +123,7 @@ app.post("/add/song",(request, response)=>{
 
 // connection to mongodb and receive the list of documents from songs collection
 
-app.get("/get/song", (request,response)=>{
+app.get("/get/songs", (request,response)=>{
     console.log("request received get");
     console.log(request.url)
     // connect to mongodb to get all documents
